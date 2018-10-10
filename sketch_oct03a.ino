@@ -89,6 +89,21 @@ class MyServerCallbacks: public BLEServerCallbacks {
       std::string rxValue = pCharacteristic->getValue();
       
       if (rxValue.length() > 0) {
+
+        if(rxValue.find("ES01") != std::string::npos) {
+          digitalWrite(23,HIGH);  //鳴らす
+          delay(100);
+          digitalWrite(23,LOW);
+          delay(1);
+          digitalWrite(23,HIGH);  //鳴らす
+          delay(100);
+          digitalWrite(23,LOW);
+          delay(1);
+          digitalWrite(23,HIGH);  //鳴らす
+          delay(100);
+          digitalWrite(23,LOW);
+          pass = "";
+        }
        
         if(rxValue.find("MS02@") != std::string::npos) {
            pass = rxValue.substr(5,rxValue.size() - 1);
@@ -116,6 +131,7 @@ void setup() {
   pinMode(13,OUTPUT);
   pinMode(14,OUTPUT);
   pinMode(23,OUTPUT);
+//  pinMode(15, INPUT);
   
   Serial.begin(115200);
 
@@ -156,8 +172,14 @@ void setup() {
  
 void loop() {
 
+//  buttonState = digitalRead(15);
+//
+//      if(buttonState == HIGH) {
+//        Serial.println("press");
+//      }
+      
   if (deviceConnected) {
-
+      
       if(pass.length() == 0){
         pCharacteristic->setValue(ES01);    
       } else {
